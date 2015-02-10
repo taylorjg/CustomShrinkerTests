@@ -12,7 +12,7 @@ namespace CustomShrinkerTests
     [TestFixture]
     public class PalindromeCheckerTests
     {
-        private static readonly Config Config = Config.VerboseThrowOnFailure;
+        private static readonly Config Config = Config.VerboseThrowOnFailure.WithStartSize(20);
         private static readonly Configuration Configuration = Config.ToConfiguration();
 
         [Test]
@@ -54,23 +54,13 @@ namespace CustomShrinkerTests
         {
             var copyOfValue = new List<int>(value);
 
-            for (;;)
+            for (; ; )
             {
                 if (copyOfValue.Count == 0) yield break;
-            
-                if (copyOfValue.Count%2 == 1)
+
+                for (var i = 0; i < 1 + copyOfValue.Count % 2; i++)
                 {
                     var index = (copyOfValue.Count - 1) / 2;
-                    copyOfValue.RemoveAt(index);
-                    yield return copyOfValue;
-                }
-                else
-                {
-                    var index = (copyOfValue.Count - 2) / 2;
-
-                    copyOfValue.RemoveAt(index);
-                    yield return copyOfValue;
-
                     copyOfValue.RemoveAt(index);
                     yield return copyOfValue;
                 }

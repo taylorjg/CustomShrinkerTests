@@ -9,19 +9,13 @@ namespace CustomShrinkerTests
         {
             if (xs.Count <= 1) return true;
 
+            if (introduceDeliberateBug && xs.Count % 2 == 1) return false;
+
             var defaultEqualityComparer = EqualityComparer<T>.Default;
 
-            if (introduceDeliberateBug && xs.Count % 2 == 1)
-            {
-                if (!defaultEqualityComparer.Equals(xs.Skip(1).First(), xs.Last())) return false;
-            }
-            else
-            {
-                if (!defaultEqualityComparer.Equals(xs.First(), xs.Last())) return false;
-            }
-
-            // ReSharper disable once TailRecursiveCall
-            return IsPalindromic(xs.Skip(1).Take(xs.Count - 2).ToList(), introduceDeliberateBug);
+            return
+                defaultEqualityComparer.Equals(xs.First(), xs.Last()) &&
+                IsPalindromic(xs.Skip(1).Take(xs.Count - 2).ToList(), introduceDeliberateBug);
         }
     }
 }

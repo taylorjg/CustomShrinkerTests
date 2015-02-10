@@ -12,14 +12,14 @@ namespace CustomShrinkerTests
     [TestFixture]
     public class PalindromeCheckerTests
     {
-        private static readonly Config Config = Config.VerboseThrowOnFailure.WithStartSize(20);
+        private static readonly Config Config = Config.VerboseThrowOnFailure;
         private static readonly Configuration Configuration = Config.ToConfiguration();
 
         [Test]
         public void PassingTest()
         {
             Spec
-                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindrome(xs, introduceDeliberateBug: false))
+                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindromic(xs, introduceDeliberateBug: false))
                 .Shrink(_ => Enumerable.Empty<IList<int>>())
                 .Check(Configuration);
         }
@@ -28,7 +28,7 @@ namespace CustomShrinkerTests
         public void FailingTestWithShrinking()
         {
             Spec
-                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindrome(xs, introduceDeliberateBug: true))
+                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindromic(xs, introduceDeliberateBug: true))
                 .Check(Configuration);
         }
 
@@ -36,7 +36,7 @@ namespace CustomShrinkerTests
         public void FailingTestWithoutShrinking()
         {
             Spec
-                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindrome(xs, introduceDeliberateBug: true))
+                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindromic(xs, introduceDeliberateBug: true))
                 .Shrink(_ => Enumerable.Empty<IList<int>>())
                 .Check(Configuration);
         }
@@ -45,7 +45,7 @@ namespace CustomShrinkerTests
         public void FailingTestWithCustomShrinking()
         {
             Spec
-                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindrome(xs, introduceDeliberateBug: true))
+                .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindromic(xs, introduceDeliberateBug: true))
                 .Shrink(PalindromeShrinker)
                 .Check(Configuration);
         }

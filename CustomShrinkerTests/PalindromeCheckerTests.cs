@@ -53,14 +53,13 @@ namespace CustomShrinkerTests
         {
             var copyOfValue = new List<T>(value);
 
-            for (; ; )
+            for (;;)
             {
-                if (copyOfValue.Count == 0) yield break;
-
-                for (var i = 0; i < 1 + copyOfValue.Count % 2; i++)
+                var hasOddLength = copyOfValue.Count%2 == 1;
+                for (var i = 0; i < (hasOddLength ? 1 : 2); i++)
                 {
-                    var index = (copyOfValue.Count - 1) / 2;
-                    copyOfValue.RemoveAt(index);
+                    if (copyOfValue.Count == 0) yield break;
+                    copyOfValue.RemoveAt((copyOfValue.Count - 1)/2);
                     yield return copyOfValue;
                 }
             }

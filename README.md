@@ -151,14 +151,13 @@ private static IEnumerable<IList<T>> PalindromeShrinker<T>(IList<T> value)
 {
     var copyOfValue = new List<T>(value);
 
-    for (; ; )
+    for (;;)
     {
-        if (copyOfValue.Count == 0) yield break;
-
-        for (var i = 0; i < 1 + copyOfValue.Count % 2; i++)
+        var hasOddLength = copyOfValue.Count%2 == 1;
+        for (var i = 0; i < (hasOddLength ? 1 : 2); i++)
         {
-            var index = (copyOfValue.Count - 1) / 2;
-            copyOfValue.RemoveAt(index);
+            if (copyOfValue.Count == 0) yield break;
+            copyOfValue.RemoveAt((copyOfValue.Count - 1)/2);
             yield return copyOfValue;
         }
     }
@@ -166,8 +165,11 @@ private static IEnumerable<IList<T>> PalindromeShrinker<T>(IList<T> value)
 ```
 
 Our custom shrinker keeps yielding smaller and smaller versions of the original palindromic list.
-Note that we make a copy of _value_ and repeatedly shrink the copy to prevent intefering with FsCheck's
-original value.  
+Each time round the <code>for</code> loop, we yield either one or two smaller lists depending on whether the
+list currently has an odd or even length respectively. For example, if the current list is <code>[1; 2; 3; 2; 1]</code>
+then we will yield <code>[1; 2; 2; 1]</code>. If the current list is <code>[1; 2; 3; 3; 2; 1]</code> then
+we will yield <code>[1; 2; 3; 2; 1]</code> followed by <code>[1; 2; 2; 1]</code>. Note that we make a copy of _value_
+and repeatedly shrink the copy to prevent intefering with FsCheck's original value.  
 
 When we run the test, we get the following ouput: 
 

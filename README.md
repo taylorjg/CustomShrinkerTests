@@ -169,7 +169,7 @@ Each time round the <code>for</code> loop, we yield either one or two smaller li
 list currently has an odd or even length respectively. For example, if the current list is <code>[1; 2; 3; 2; 1]</code>
 then we will yield <code>[1; 2; 2; 1]</code>. If the current list is <code>[1; 2; 3; 3; 2; 1]</code> then
 we will yield <code>[1; 2; 3; 2; 1]</code> followed by <code>[1; 2; 2; 1]</code>. Note that we make a copy of _value_
-and repeatedly shrink the copy to prevent intefering with FsCheck's original value.  
+and repeatedly shrink the copy to prevent interfering with FsCheck's original value.  
 
 When we run the test, we get the following ouput: 
 

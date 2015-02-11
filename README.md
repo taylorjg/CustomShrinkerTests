@@ -168,6 +168,7 @@ private static IEnumerable<IList<T>> PalindromeShrinker<T>(IList<T> value)
 Our custom shrinker keeps yielding smaller and smaller versions of the original palindromic list.
 Note that we make a copy of _value_ and repeatedly shrink the copy to prevent intefering with FsCheck's
 original value.  
+
 When we run the test, we get the following ouput: 
 
 ```

@@ -20,7 +20,6 @@ namespace CustomShrinkerTests
         {
             Spec
                 .For(PalindromeGen(Any.OfType<int>()), xs => PalindromeChecker.IsPalindromic(xs, introduceDeliberateBug: false))
-                .Shrink(_ => Enumerable.Empty<IList<int>>())
                 .Check(Configuration);
         }
 
@@ -50,9 +49,9 @@ namespace CustomShrinkerTests
                 .Check(Configuration);
         }
 
-        private static IEnumerable<IList<int>> PalindromeShrinker(IList<int> value)
+        private static IEnumerable<IList<T>> PalindromeShrinker<T>(IList<T> value)
         {
-            var copyOfValue = new List<int>(value);
+            var copyOfValue = new List<T>(value);
 
             for (; ; )
             {
